@@ -4,26 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal IA | GMN Group</title>
-    <!-- Tailwind CSS para el diseño -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Librería de Autenticación de Microsoft -->
     <script src="https://alcdn.msauth.net/browser/2.35.0/js/msal-browser.min.js"></script>
 </head>
 <body class="bg-slate-50 min-h-screen">
 
-    <!-- PANTALLA DE LOGIN (Se muestra por defecto) -->
     <div id="login-screen" class="flex flex-col items-center justify-center h-screen">
         <div class="bg-white p-8 rounded-2xl shadow-xl border border-gray-100 text-center max-w-sm">
             <h1 class="text-2xl font-bold text-slate-800 mb-2">GMN Group</h1>
             <p class="text-gray-500 mb-6">Inicia sesión con tu cuenta corporativa para acceder a las herramientas de IA.</p>
             <button onclick="handleLogin()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition-all flex items-center justify-center gap-2">
-                <img src="https://docs.microsoft.com/en-us/azure/active-directory/develop/media/howto-add-branding-in-azure-ad-apps/ms-symbollockup_mssymbol_32.png" class="w-5 h-5">
+                <img src="https://docs.microsoft.com/en-us/azure/active-directory/develop/media/howto-add-branding-in-azure-ad-apps/ms-symbollockup_mssymbol_32.png" alt="Microsoft logo" class="w-5 h-5">
                 Iniciar sesión con Microsoft
             </button>
         </div>
     </div>
 
-    <!-- DASHBOARD DE APLICACIONES (Oculto hasta loguearse) -->
     <div id="dashboard" class="hidden">
         <nav class="bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
             <span class="font-bold text-xl text-blue-800">GMN <span class="text-slate-500">AI HUB</span></span>
@@ -35,9 +31,7 @@
 
         <main class="p-8 max-w-6xl mx-auto">
             <h2 class="text-2xl font-bold text-slate-800 mb-8">Aplicaciones Disponibles</h2>
-            
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- App 1: Cartas Gantt -->
                 <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
                     <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4 text-blue-600">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -46,12 +40,10 @@
                     </div>
                     <h3 class="font-bold text-lg mb-2 text-slate-800">Gestión Gantt (Claude)</h3>
                     <p class="text-sm text-gray-600 mb-6">Visualización dinámica de proyectos y cronogramas operativos.</p>
-                    <a href="http://URL-PUBLICA-DEL-LOCAL.com/gantt" target="_blank" class="block text-center bg-slate-800 hover:bg-slate-900 text-white py-2 rounded-lg text-sm font-semibold transition-colors">
+                    <a href="https://TU-URL-DE-NGROK-AQUI.ngrok-free.app" target="_blank" rel="noopener noreferrer" class="block text-center bg-slate-800 hover:bg-slate-900 text-white py-2 rounded-lg text-sm font-semibold transition-colors">
                         Abrir en nueva pestaña
                     </a>
                 </div>
-
-                <!-- Espacio para futuras apps -->
                 <div class="border-2 border-dashed border-gray-200 rounded-xl flex items-center justify-center p-6 grayscale opacity-50">
                     <p class="text-gray-400 font-medium italic text-sm">Próximamente más herramientas...</p>
                 </div>
@@ -60,29 +52,65 @@
     </div>
 
     <script>
-        // CONFIGURACIÓN DE MICROSOFT (Reemplazar con datos de GoDaddy/Azure)
         const msalConfig = {
             auth: {
                 clientId: "d2b137ef-4acc-488b-bf72-3aedcc5ee545", 
-                authority: "https://login.microsoftonline.com/c5598f60-6a92-4ebb-8cb7-26d72d709407",                redirectUri: window.location.origin
+                authority: "https://login.microsoftonline.com/c5598f60-6a92-4ebb-8cb7-26d72d709407",     
+                redirectUri: "https://sarudalf3.github.io/GMN_intranet/auth.html",       
+                navigateToLoginRequestUrl: false 
+            },
+            cache: {
+                cacheLocation: "sessionStorage",
+                storeAuthStateInCookie: false
             }
-        };
-
+    };
         const myMSALObj = new msal.PublicClientApplication(msalConfig);
+
+        // 1. AL CARGAR LA PÁGINA: Procesar la respuesta del login
+        myMSALObj.handleRedirectPromise().then(handleResponse).catch(err => {
+            console.error("Error en Redirect:", err);
+        });
+
+        function handleResponse(response) {
+            if (response !== null) {
+                checkAndShow(response.account);
+            } else {
+                const currentAccounts = myMSALObj.getAllAccounts();
+                if (currentAccounts.length > 0) {
+                    checkAndShow(currentAccounts[0]);
+                }
+            }
+        }
+
+        function checkAndShow(account) {
+            if (account.username.toLowerCase().endsWith("@gmngroup.cl")) {
+                showDashboard(account);
+            } else {
+                alert("Acceso restringido solo para @gmngroup.cl");
+                handleLogout();
+            }
+        }
 
         async function handleLogin() {
             try {
+                // Al usar await, el código se "detiene" hasta que el popup termina
                 const loginResponse = await myMSALObj.loginPopup({
-                    scopes: ["user.read"]
+                    scopes: ["user.read"],
+                    prompt: "select_account",
+                    // Esto asegura que el popup vaya a la página en blanco
+                    redirectUri: "https://sarudalf3.github.io/GMN_intranet/auth.html" 
                 });
-                // Verificar que sea del dominio correcto
-                if (loginResponse.account.username.endsWith("@gmngroup.cl")) {
-                    showDashboard(loginResponse.account);
-                } else {
-                    alert("Acceso restringido solo para @gmngroup.cl");
-                    handleLogout();
-                }
-            } catch (error) { console.error(error); }
+
+                console.log("Login exitoso en popup");
+                
+                // Una vez que recibimos la respuesta, el popup se cierra automáticamente
+                // y ejecutamos la validación en la ventana principal
+                checkAndShow(loginResponse.account);
+                
+            } catch (error) {
+                console.error("Error en Login:", error);
+                // Si el usuario cierra el popup manualmente antes de loguearse, entrará aquí
+            }
         }
 
         function showDashboard(account) {
@@ -92,8 +120,13 @@
         }
 
         function handleLogout() {
-            // Lógica simple de limpieza para la maqueta
-            location.reload();
+            const logoutRequest = {
+                account: myMSALObj.getAccountByUsername(document.getElementById('user-display').innerText),
+                postLogoutRedirectUri: msalConfig.auth.redirectUri
+            };
+            myMSALObj.logoutPopup(logoutRequest).then(() => {
+                location.reload();
+            });
         }
     </script>
 </body>
