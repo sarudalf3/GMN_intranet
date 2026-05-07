@@ -103,9 +103,10 @@
 
                 console.log("Login exitoso en popup");
                 
-                // Una vez que recibimos la respuesta, el popup se cierra automáticamente
-                // y ejecutamos la validación en la ventana principal
-                checkAndShow(loginResponse.account);
+                // Al usar await, esta línea se ejecuta SOLO cuando el popup se cierra solo
+                if (loginResponse && loginResponse.account) {
+                    checkAndShow(loginResponse.account);
+                }
                 
             } catch (error) {
                 console.error("Error en Login:", error);
@@ -114,9 +115,13 @@
         }
 
         function showDashboard(account) {
-            document.getElementById('login-screen').classList.add('hidden');
-            document.getElementById('dashboard').classList.remove('hidden');
-            document.getElementById('user-display').innerText = account.username;
+            const loginScreen = document.getElementById('login-screen');
+            const dashboard = document.getElementById('dashboard');
+            const userDisplay = document.getElementById('user-display');
+
+            if (loginScreen) loginScreen.classList.add('hidden'); // Oculta el login
+            if (dashboard) dashboard.classList.remove('hidden'); // Muestra las apps
+            if (userDisplay) userDisplay.innerText = account.username; // Pone tu email arriba
         }
 
         function handleLogout() {
