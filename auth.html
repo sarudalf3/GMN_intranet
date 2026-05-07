@@ -5,6 +5,15 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Autenticando...</title>
+        <script src="https://alcdn.msauth.net/browser/2.35.0/js/msal-browser.min.js"></script>
     </head>
-    <body></body>
+    <body>
+        <script>
+            // Este archivo solo sirve para cerrar el popup y devolver el control
+            const msalInstance = new msal.PublicClientApplication({
+                auth: { clientId: "d2b137ef-4acc-488b-bf72-3aedcc5ee545" }
+            });
+            msalInstance.handleRedirectPromise();
+        </script>
+    </body>
 </html>
