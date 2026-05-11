@@ -76,12 +76,12 @@
                     // podrías devolverlo a index.html
                     const currentAccounts = myMSALObj.getAllAccounts();
                     if (currentAccounts.length === 0) {
-                        window.location.href = "index.html";
+                        window.location.assign = "index.html";
                     }
                 }
             })
             .catch((error) => {
-                console.error(error);
+                console.error("Error en redirección:", error);
             });
 
 

@@ -25,7 +25,9 @@
             auth: {
                 clientId: "d2b137ef-4acc-488b-bf72-3aedcc5ee545",
                 authority: "https://login.microsoftonline.com/c5598f60-6a92-4ebb-8cb7-26d72d709407",
-                redirectUri: "https://sarudalf3.github.io/GMN_intranet/dashboard.html", // OJO: Apunta al dashboard
+                        // Esto asegura que siempre intente ir a dashboard.html
+                redirectUri: window.location.origin + "/GMN_intranet/dashboard.html",  
+                //redirectUri: "https://sarudalf3.github.io/GMN_intranet/dashboard.html", // OJO: Apunta al dashboard
                 // Evita que MSAL intente volver a la página de inicio de sesión original
                 navigateToLoginRequestUrl: false 
             },
