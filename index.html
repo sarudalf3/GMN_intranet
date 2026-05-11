@@ -2,243 +2,41 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GMN Group - Intranet</title>
+    <title>Login | GMN Group</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://alcdn.msauth.net/browser/2.35.0/js/msal-browser.min.js"></script>
-    <style>
-        [x-cloak] { display: none !important; }
-    </style>
 </head>
-<body class="bg-slate-50 min-h-screen">
-
-    <nav class="bg-slate-900 border-b border-gray-800 px-6 py-4 flex justify-between items-center sticky top-0 z-50">
-        <div class="flex items-center gap-3">
-            <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center font-bold text-white text-xl">G</div>
-            <span class="font-bold text-xl text-white">GMN <span class="text-blue-400">AI HUB</span></span>
-        </div>
-        <div class="flex items-center gap-4">
-            <span id="user-display" class="text-sm text-gray-300">Cargando usuario...</span>
-            <button onclick="handleLogout()" class="bg-red-600 hover:bg-red-700 text-white text-xs px-3 py-1.5 rounded-lg font-medium transition-colors">
-                Cerrar sesión
-            </button>
-        </div>
-    </nav>
-
-    <main id="dashboard" class="hidden p-8 max-w-7xl mx-auto">
-        <header class="mb-10">
-            <h1 class="text-3xl font-bold text-slate-900">Bienvenido al Portal de GMN Group</h1>
-            <p class="text-gray-600 mt-2">Acceso centralizado a herramientas, documentos y conocimiento corporativo.</p>
-        </header>
-
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-
-            <section class="bg-white p-7 rounded-2xl border border-gray-100 shadow-sm">
-                <div class="flex items-center gap-4 mb-6 pb-4 border-b border-gray-100">
-                    <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                        </svg>
-                    </div>
-                    <h2 class="text-2xl font-semibold text-slate-800">1. Aplicaciones</h2>
-                </div>
-                
-                <div class="space-y-5">
-                    <div class="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-gray-100">
-                        <div>
-                            <h3 class="font-bold text-slate-800">Gestión Gantt (Claude)</h3>
-                            <p class="text-sm text-gray-600">Visualización dinámica de proyectos operativos.</p>
-                        </div>
-                        <a href="https://TU-URL-DE-NGROK-AQUI.ngrok-free.app" target="_blank" rel="noopener noreferrer" class="bg-slate-800 hover:bg-slate-900 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">
-                            Abrir
-                        </a>
-                    </div>
-                    <div class="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-gray-100">
-                        <div>
-                            <h3 class="font-bold text-slate-800">Predictor de Producción (Modelo IA)</h3>
-                            <p class="text-sm text-gray-600">Estimación de KPIs trimestrales.</p>
-                        </div>
-                        <a href="#" class="bg-slate-800 hover:bg-slate-900 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">
-                            Abrir
-                        </a>
-                    </div>
-                </div>
-            </section>
-
-            <section class="bg-white p-7 rounded-2xl border border-gray-100 shadow-sm">
-                <div class="flex items-center gap-4 mb-6 pb-4 border-b border-gray-100">
-                    <div class="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center text-emerald-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                    </div>
-                    <h2 class="text-2xl font-semibold text-slate-800">2. Plantillas</h2>
-                </div>
-                
-                <ul class="space-y-3 text-slate-700">
-                    <li class="flex items-center justify-between p-3 hover:bg-slate-50 rounded-lg">
-                        <span>Formato de Cierre Proyecto (DOCX)</span>
-                        <a href="/plantillas/cierre_proyecto.docx" class="text-emerald-600 hover:text-emerald-700" title="Descargar">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
-                        </a>
-                    </li>
-                    <li class="flex items-center justify-between p-3 hover:bg-slate-50 rounded-lg">
-                        <span>Formato de Presentaciones Corporativas (PPTX)</span>
-                        <a href="/plantillas/presentacion_gmn.pptx" class="text-emerald-600 hover:text-emerald-700" title="Descargar">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
-                        </a>
-                    </li>
-                    <li class="flex items-center justify-between p-3 hover:bg-slate-50 rounded-lg">
-                        <span>Trípticos de Capacitaciones SAP (PDF)</span>
-                        <a href="/plantillas/capacitacion_sap.pdf" class="text-emerald-600 hover:text-emerald-700" title="Descargar">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
-                        </a>
-                    </li>
-                </ul>
-            </section>
-
-            <section class="bg-white p-7 rounded-2xl border border-gray-100 shadow-sm">
-                <div class="flex items-center gap-4 mb-6 pb-4 border-b border-gray-100">
-                    <div class="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center text-amber-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                    <h2 class="text-2xl font-semibold text-slate-800">3. Doctos Administrativos</h2>
-                </div>
-                
-                <ul class="space-y-3 text-slate-700">
-                    <li class="flex items-center justify-between p-3 hover:bg-slate-50 rounded-lg">
-                        <span>Código de Higiene y Seguridad (PDF)</span>
-                        <a href="/doctos/codigo_higiene.pdf" target="_blank" class="text-amber-600 hover:text-amber-700" title="Ver Documento">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
-                        </a>
-                    </li>
-                    <li class="flex items-center justify-between p-3 hover:bg-slate-50 rounded-lg">
-                        <span>Formulario de Solicitud Vacaciones</span>
-                        <a href="#" class="text-amber-600 hover:text-amber-700" title="Abrir Formulario">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
-                        </a>
-                    </li>
-                    <li class="flex items-center justify-between p-3 hover:bg-slate-50 rounded-lg">
-                        <span>Formulario de Registro de Equipo</span>
-                        <a href="#" class="text-amber-600 hover:text-amber-700" title="Abrir Formulario">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
-                        </a>
-                    </li>
-                </ul>
-            </section>
-
-            <section class="bg-white p-7 rounded-2xl border border-gray-100 shadow-sm">
-                <div class="flex items-center gap-4 mb-6 pb-4 border-b border-gray-100">
-                    <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center text-purple-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                        </svg>
-                    </div>
-                    <h2 class="text-2xl font-semibold text-slate-800">4. Sección Wiki de Proyectos</h2>
-                </div>
-                
-                <div class="space-y-4">
-                    <h3 class="font-semibold text-slate-700">Últimos Proyectos Señalados:</h3>
-                    <ul class="list-disc list-inside text-purple-700 space-y-2 pl-2">
-                        <li><a href="proyecto_info.html?id=proyectoA" class="hover:underline">Proyecto Aac: Resumen Documental</a></li>
-                        <li><a href="proyecto_info.html?id=proyectoB" class="hover:underline">Proyecto Bbb: Lecciones Aprendidas</a></li>
-                        <li><a href="proyecto_info.html?id=proyectoC" class="hover:underline">Proyecto Ccc: Cierre Técnico</a></li>
-                    </ul>
-                    
-                    <div class="pt-4 border-t border-gray-100">
-                        <a href="wiki_index.html" class="inline-block bg-purple-600 hover:bg-purple-700 text-white text-sm px-5 py-2.5 rounded-lg font-semibold transition-colors">
-                            Ver Diccionario Completo de Proyectos
-                        </a>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <section id="admin-tools" class="hidden mt-10 bg-slate-900 p-7 rounded-2xl text-white">
-            <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
-                Herramientas de Administración
-            </h2>
-            <p class="text-slate-300 text-sm mb-5">Solo tú y otros administradores registrados en Azure pueden ver esta sección.</p>
-            <div class="flex gap-4">
-                <button class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-sm font-medium">Actualizar Enlaces</button>
-                <button class="bg-slate-700 hover:bg-slate-800 px-4 py-2 rounded-lg text-sm font-medium">Subir Nueva Plantilla</button>
-            </div>
-        </section>
-
-    </main>
+<body class="bg-slate-900 flex items-center justify-center h-screen">
+    <div class="bg-white p-10 rounded-2xl shadow-2xl text-center max-w-sm">
+        <h1 class="text-2xl font-bold mb-4 text-slate-800">GMN Intranet</h1>
+        <p class="text-gray-500 mb-8">Inicia sesión con tu cuenta corporativa.</p>
+        <button onclick="handleLogin()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition-all flex items-center justify-center gap-2">
+            <img src="https://docs.microsoft.com/en-us/azure/active-directory/develop/media/howto-add-branding-in-azure-ad-apps/ms-symbollockup_mssymbol_32.png" class="w-5 h-5">
+            Iniciar sesión
+        </button>
+    </div>
 
     <script>
-        // --- CONFIGURACIÓN DE MICROSOFT MSAL (IDÉNTICA A LA ANTERIOR) ---
         const msalConfig = {
             auth: {
-                clientId: "d2b137ef-4acc-488b-bf72-3aedcc5ee545", 
-                authority: "https://login.microsoftonline.com/c5598f60-6a92-4ebb-8cb7-26d72d709407",     
-                redirectUri: "https://sarudalf3.github.io/GMN_intranet/"           
-            },
-            cache: {
-                cacheLocation: "sessionStorage",
-                storeAuthStateInCookie: false
+                clientId: "d2b137ef-4acc-488b-bf72-3aedcc5ee545",
+                authority: "https://login.microsoftonline.com/c5598f60-6a92-4ebb-8cb7-26d72d709407",
+                redirectUri: "https://sarudalf3.github.io/GMN_intranet/dashboard.html" // OJO: Apunta al dashboard
             }
         };
-
         const myMSALObj = new msal.PublicClientApplication(msalConfig);
 
-        // Al cargar la página, verificamos la sesión
-        myMSALObj.handleRedirectPromise().then(handleResponse).catch(err => {
-            console.error(err);
-        });
+        async function handleLogin() {
+            // Usamos Redirect para evitar problemas de popups bloqueados
+            myMSALObj.loginRedirect({ scopes: ["user.read"] });
+        }
 
-        function handleResponse(response) {
-            if (response !== null) {
-                checkAndShow(response.account);
-            } else {
-                const currentAccounts = myMSALObj.getAllAccounts();
-                if (currentAccounts.length > 0) {
-                    checkAndShow(currentAccounts[0]);
-                } else {
-                    // Si no hay sesión, redirigir al login (index.html)
-                    window.location.href = "index.html";
-                }
+        // Si ya tiene sesión, enviarlo directo al dashboard
+        window.onload = () => {
+            if (myMSALObj.getAllAccounts().length > 0) {
+                window.location.href = "dashboard.html";
             }
-        }
-
-        function checkAndShow(account) {
-            // 1. Validar dominio
-            if (!account.username.toLowerCase().endsWith("@gmngroup.cl")) {
-                alert("Acceso no autorizado.");
-                handleLogout();
-                return;
-            }
-
-            // 2. Leer roles (Preservado de la lógica anterior)
-            const userRoles = account.idTokenClaims.roles || [];
-            const isAdmin = userRoles.includes("Admin");
-
-            showDashboard(account, isAdmin);
-        }
-
-        function showDashboard(account, isAdmin) {
-            document.getElementById('dashboard').classList.remove('hidden');
-            document.getElementById('user-display').innerText = account.username;
-
-            // Mostrar herramientas de admin si corresponde
-            if (isAdmin) {
-                document.getElementById('admin-tools').classList.remove('hidden');
-            }
-        }
-
-        function handleLogout() {
-            const logoutRequest = {
-                account: myMSALObj.getAccountByUsername(document.getElementById('user-display').innerText),
-                postLogoutRedirectUri: msalConfig.auth.redirectUri
-            };
-            myMSALObj.logoutPopup(logoutRequest).then(() => {
-                window.location.href = "index.html";
-            });
-        }
+        };
     </script>
 </body>
 </html>

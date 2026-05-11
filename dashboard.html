@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard | GMN Group</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://alcdn.msauth.net/browser/2.35.0/js/msal-browser.min.js"></script>
+</head>
+<body class="bg-slate-50 min-h-screen">
+    <nav class="bg-slate-900 text-white p-4 flex justify-between items-center shadow-md">
+        <span class="font-bold text-xl">GMN HUB</span>
+        <div class="flex items-center gap-4 text-sm">
+            <span id="user-display"></span>
+            <button onclick="logout()" class="bg-red-600 px-3 py-1 rounded">Salir</button>
+        </div>
+    </nav>
+
+    <main id="content" class="p-8 max-w-7xl mx-auto hidden">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <section class="bg-white p-6 rounded-xl shadow-sm border">
+                <h2 class="text-xl font-bold mb-4 text-blue-600">1. Aplicaciones IA</h2>
+                <div class="space-y-3">
+                    <a href="https://TU-NGROK.app" target="_blank" class="block p-3 bg-slate-50 hover:bg-slate-100 rounded border">Gestión Gantt (Claude)</a>
+                </div>
+            </section>
+
+            <section class="bg-white p-6 rounded-xl shadow-sm border">
+                <h2 class="text-xl font-bold mb-4 text-emerald-600">2. Plantillas</h2>
+                <ul class="text-sm space-y-2">
+                    <li>📄 <a href="#" class="hover:underline">Cierre de Proyecto (DOCX)</a></li>
+                    <li>📊 <a href="#" class="hover:underline">Presentación SAP (PPTX)</a></li>
+                </ul>
+            </section>
+
+            <section class="bg-white p-6 rounded-xl shadow-sm border">
+                <h2 class="text-xl font-bold mb-4 text-amber-600">3. Doctos Administrativos</h2>
+                <ul class="text-sm space-y-2">
+                    <li>📋 <a href="#" class="hover:underline">Formulario Vacaciones</a></li>
+                    <li>🛡️ <a href="#" class="hover:underline">Código de Higiene</a></li>
+                </ul>
+            </section>
+
+            <section class="bg-white p-6 rounded-xl shadow-sm border">
+                <h2 class="text-xl font-bold mb-4 text-purple-600">4. Wiki de Proyectos</h2>
+                <ul class="text-sm space-y-2">
+                    <li>🔗 <a href="proyecto_info.html?id=proyectoA" class="text-purple-700 font-bold hover:underline">Proyecto Aac</a></li>
+                    <li>🔗 <a href="proyecto_info.html?id=proyectoB" class="text-purple-700 font-bold hover:underline">Proyecto Bbb</a></li>
+                </ul>
+            </section>
+        </div>
+
+        <div id="admin-panel" class="hidden mt-8 p-6 bg-slate-800 text-white rounded-xl">
+            <h3 class="font-bold">Panel Administrador</h3>
+            <button class="mt-2 text-sm bg-blue-600 px-4 py-2 rounded">Subir nuevo archivo</button>
+        </div>
+    </main>
+
+    <script>
+        const msalConfig = {
+            auth: {
+                clientId: "d2b137ef-4acc-488b-bf72-3aedcc5ee545",
+                authority: "https://login.microsoftonline.com/c5598f60-6a92-4ebb-8cb7-26d72d709407",
+                redirectUri: "https://sarudalf3.github.io/GMN_intranet/dashboard.html"
+            }
+        };
+        const myMSALObj = new msal.PublicClientApplication(msalConfig);
+
+        myMSALObj.handleRedirectPromise().then(response => {
+            if (response) {
+                // Al volver del login, limpiamos la URL de códigos raros
+                window.history.replaceState({}, document.title, window.location.pathname);
+                processAccount(response.account);
+            } else {
+                const accounts = myMSALObj.getAllAccounts();
+                if (accounts.length > 0) processAccount(accounts[0]);
+                else window.location.href = "index.html"; // PROTECCIÓN
+            }
+        });
+
+        function processAccount(account) {
+            document.getElementById('content').classList.remove('hidden');
+            document.getElementById('user-display').innerText = account.username;
+
+            // LÓGICA DE ADMIN
+            const roles = account.idTokenClaims.roles || [];
+            if (roles.includes("Admin")) {
+                document.getElementById('admin-panel').classList.remove('hidden');
+            }
+        }
+
+        function logout() {
+            myMSALObj.logoutRedirect();
+        }
+    </script>
+</body>
+</html>
