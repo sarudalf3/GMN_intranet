@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de Proyecto | GMN Group</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://alcdn.msauth.net/browser/2.35.0/js/msal-browser.min.js"></script>
+</head>
+<body class="bg-slate-50 min-h-screen font-sans">
+
+    <nav class="bg-white border-b border-gray-200 px-6 py-3 flex justify-between items-center sticky top-0 z-50">
+        <div class="flex items-center gap-4">
+            <a href="dashboard.html" class="text-blue-600 hover:text-blue-800 flex items-center gap-2 text-sm font-medium">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+                Volver al Inicio
+            </a>
+            <div class="h-4 w-px bg-gray-300"></div>
+            <span class="font-bold text-slate-700">Ficha de Proyecto</span>
+        </div>
+        <div id="user-info" class="text-xs text-gray-500">
+            <span id="user-display">Verificando sesión...</span>
+        </div>
+    </nav>
+
+    <main id="project-content" class="max-w-5xl mx-auto p-8">
+        
+        <header class="mb-8 border-b border-gray-200 pb-6">
+            <div class="flex justify-between items-start mb-4">
+                <h1 id="p-title" class="text-4xl font-extrabold text-slate-900 tracking-tight">Cargando proyecto...</h1>
+                <span id="p-status" class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider"></span>
+            </div>
+            <div class="flex gap-6 text-sm text-gray-500">
+                <span class="flex items-center gap-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                    Fecha: <strong id="p-date" class="text-slate-700">-</strong>
+                </span>
+                <span class="flex items-center gap-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                    Ubicación: <strong id="p-location" class="text-slate-700">-</strong>
+                </span>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+            
+            <div class="md:col-span-2 space-y-8">
+                <section>
+                    <h2 class="text-xl font-bold text-slate-800 mb-3">Resumen del Proyecto</h2>
+                    <p id="p-description" class="text-slate-600 leading-relaxed text-lg"></p>
+                </section>
+
+                <section class="bg-blue-50 p-6 rounded-xl border border-blue-100">
+                    <h2 class="text-lg font-bold text-blue-900 mb-2">Objetivo Principal</h2>
+                    <p id="p-objective" class="text-blue-800 italic"></p>
+                </section>
+
+                <section>
+                    <h2 class="text-xl font-bold text-slate-800 mb-3 text-red-500">Lecciones Aprendidas</h2>
+                    <ul id="p-lessons" class="list-disc list-inside space-y-2 text-slate-600">
+                        </ul>
+                </section>
+            </div>
+
+            <div class="space-y-6">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                    <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg>
+                        Acceso Directo
+                    </h3>
+                    <div class="space-y-3">
+                        <a id="p-sharepoint" href="#" target="_blank" class="flex items-center justify-between p-3 bg-slate-50 hover:bg-blue-100 rounded-lg transition-colors group">
+                            <span class="text-sm font-medium text-slate-700">Carpeta SharePoint</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 group-hover:text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                        </a>
+                        <a id="p-powerbi" href="#" target="_blank" class="flex items-center justify-between p-3 bg-slate-50 hover:bg-yellow-100 rounded-lg transition-colors group">
+                            <span class="text-sm font-medium text-slate-700">Reporte Power BI</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 group-hover:text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                    <h3 class="font-bold text-slate-800 mb-4">Equipo Responsable</h3>
+                    <ul id="p-team" class="space-y-3">
+                        </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // 1. DATA MOCK (Esto simula lo que vendría de tu base de datos Azure SQL)
+        const proyectosDB = {
+            "proyectoA": {
+                titulo: "Proyecto Aac: Digitalización Mina Norte",
+                status: "Completado",
+                statusColor: "bg-green-100 text-green-700",
+                fecha: "Marzo 2026",
+                ubicación: "Faena Atacama",
+                descripcion: "Implementación de sensores IoT para el monitoreo de temperatura en correas transportadoras. Este proyecto permitió reducir las paradas no programadas en un 15% durante el primer trimestre.",
+                objetivo: "Lograr una visibilidad en tiempo real del estado de los activos críticos mediante un dashboard centralizado.",
+                lecciones: [
+                    "Es vital realizar pruebas de conectividad antes del montaje final.",
+                    "La capacitación del personal de mantenimiento fue clave para el éxito.",
+                    "Se requiere redundancia en los nodos de comunicación."
+                ],
+                sharepoint: "https://gmngroup.sharepoint.com/proyectos/Aac",
+                powerbi: "https://app.powerbi.com/view?r=ejemploA",
+                equipo: [
+                    { nombre: "Rubén Miranda", rol: "Data Scientist" },
+                    { nombre: "Carlos Soto", rol: "Ingeniero de Terreno" }
+                ]
+            },
+            "proyectoB": {
+                titulo: "Proyecto Bbb: Optimización SAP R3",
+                status: "En Proceso",
+                statusColor: "bg-blue-100 text-blue-700",
+                fecha: "Mayo 2026",
+                ubicación: "Oficina Central, Santiago",
+                descripcion: "Reestructuración de los módulos de logística en SAP para mejorar la trazabilidad de repuestos de maquinaria pesada entre bodegas regionales.",
+                objetivo: "Reducir los tiempos de despacho de repuestos críticos de 48 a 24 horas.",
+                lecciones: [
+                    "La limpieza de datos maestros es el paso que toma más tiempo.",
+                    "Se detectó una brecha de capacitación en el uso de transacciones MM."
+                ],
+                sharepoint: "https://gmngroup.sharepoint.com/proyectos/Bbb",
+                powerbi: "https://app.powerbi.com/view?r=ejemploB",
+                equipo: [
+                    { nombre: "Andrea Paz", rol: "Consultora SAP" },
+                    { nombre: "Juan Pérez", rol: "Encargado Inventario" }
+                ]
+            }
+        };
+
+        // 2. LÓGICA DE CARGA
+        function loadProject() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const projectId = urlParams.get('id');
+            const data = proyectosDB[projectId];
+
+            if (!data) {
+                document.getElementById('project-content').innerHTML = `
+                    <div class="text-center py-20">
+                        <h1 class="text-2xl font-bold text-gray-400">Proyecto no encontrado</h1>
+                        <a href="dashboard.html" class="text-blue-600 underline mt-4 block">Volver al panel principal</a>
+                    </div>
+                `;
+                return;
+            }
+
+            // Llenar campos
+            document.title = `${data.titulo} | GMN Group`;
+            document.getElementById('p-title').innerText = data.titulo;
+            document.getElementById('p-date').innerText = data.fecha;
+            document.getElementById('p-location').innerText = data.ubicación;
+            document.getElementById('p-description').innerText = data.descripcion;
+            document.getElementById('p-objective').innerText = data.objetivo;
+            document.getElementById('p-status').innerText = data.status;
+            document.getElementById('p-status').className += " " + data.statusColor;
+            
+            document.getElementById('p-sharepoint').href = data.sharepoint;
+            document.getElementById('p-powerbi').href = data.powerbi;
+
+            // Llenar Lecciones
+            const lessonsList = document.getElementById('p-lessons');
+            data.lecciones.forEach(l => {
+                const li = document.createElement('li');
+                li.innerText = l;
+                lessonsList.appendChild(li);
+            });
+
+            // Llenar Equipo
+            const teamList = document.getElementById('p-team');
+            data.equipo.forEach(m => {
+                const li = document.createElement('li');
+                li.className = "flex justify-between border-b border-gray-50 pb-2";
+                li.innerHTML = `<span class="text-sm font-bold text-slate-700">${m.nombre}</span> <span class="text-xs text-gray-500">${m.rol}</span>`;
+                teamList.appendChild(li);
+            });
+        }
+
+        // 3. SEGURIDAD (Simulada para la maqueta)
+        // En la versión final, aquí usarías el código MSAL para verificar que el usuario esté logueado
+        window.onload = () => {
+            document.getElementById('user-display').innerText = "ruben.miranda@gmngroup.cl";
+            loadProject();
+        };
+    </script>
+</body>
+</html>
