@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Dashboard | GMN Group</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://alcdn.msauth.net/browser/2.35.0/js/msal-browser.min.js"></script>
@@ -11,7 +12,7 @@
         <span class="font-bold text-xl">GMN HUB</span>
         <div class="flex items-center gap-4 text-sm">
             <span id="user-display"></span>
-            <button onclick="logout()" class="bg-red-600 px-3 py-1 rounded">Salir</button>
+            <button type="button" onclick="logout()" class="bg-red-600 px-3 py-1 rounded">Salir</button>
         </div>
     </nav>
 
@@ -20,7 +21,7 @@
             <section class="bg-white p-6 rounded-xl shadow-sm border">
                 <h2 class="text-xl font-bold mb-4 text-blue-600">1. Aplicaciones IA</h2>
                 <div class="space-y-3">
-                    <a href="https://TU-NGROK.app" target="_blank" class="block p-3 bg-slate-50 hover:bg-slate-100 rounded border">Gestión Gantt (Claude)</a>
+                    <a href="https://TU-NGROK.app" target="_blank" rel="noopener noreferrer" class="block p-3 bg-slate-50 hover:bg-slate-100 rounded border">Gestión Gantt (Claude)</a>
                 </div>
             </section>
 
@@ -65,17 +66,24 @@
         };
         const myMSALObj = new msal.PublicClientApplication(msalConfig);
 
-        myMSALObj.handleRedirectPromise().then(response => {
-            if (response) {
-                // Al volver del login, limpiamos la URL de códigos raros
-                window.history.replaceState({}, document.title, window.location.pathname);
-                processAccount(response.account);
-            } else {
-                const accounts = myMSALObj.getAllAccounts();
-                if (accounts.length > 0) processAccount(accounts[0]);
-                else window.location.href = "index.html"; // PROTECCIÓN
-            }
-        });
+        myMSALObj.handleRedirectPromise()
+            .then((response) => {
+                if (response !== null) {
+                    console.log("Sesión iniciada correctamente");
+                    // Aquí puedes ejecutar la lógica para cargar los datos del dashboard
+                } else {
+                    // Si el usuario llega aquí sin estar autenticado, 
+                    // podrías devolverlo a index.html
+                    const currentAccounts = myMSALObj.getAllAccounts();
+                    if (currentAccounts.length === 0) {
+                        window.location.href = "index.html";
+                    }
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+
 
         function processAccount(account) {
             document.getElementById('content').classList.remove('hidden');

@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Login | GMN Group</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://alcdn.msauth.net/browser/2.35.0/js/msal-browser.min.js"></script>
@@ -11,7 +12,10 @@
         <h1 class="text-2xl font-bold mb-4 text-slate-800">GMN Intranet</h1>
         <p class="text-gray-500 mb-8">Inicia sesión con tu cuenta corporativa.</p>
         <button onclick="handleLogin()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition-all flex items-center justify-center gap-2">
-            <img src="https://docs.microsoft.com/en-us/azure/active-directory/develop/media/howto-add-branding-in-azure-ad-apps/ms-symbollockup_mssymbol_32.png" class="w-5 h-5">
+            <img src="https://docs.microsoft.com/en-us/azure/active-directory/develop/media/howto-add-branding-in-azure-ad-apps/ms-symbollockup_mssymbol_32.png" 
+                alt="Microsoft logo"
+                title="Microsoft logo"
+                class="w-5 h-5">
             Iniciar sesión
         </button>
     </div>
@@ -21,9 +25,16 @@
             auth: {
                 clientId: "d2b137ef-4acc-488b-bf72-3aedcc5ee545",
                 authority: "https://login.microsoftonline.com/c5598f60-6a92-4ebb-8cb7-26d72d709407",
-                redirectUri: "https://sarudalf3.github.io/GMN_intranet/dashboard.html" // OJO: Apunta al dashboard
+                redirectUri: "https://sarudalf3.github.io/GMN_intranet/dashboard.html", // OJO: Apunta al dashboard
+                // Evita que MSAL intente volver a la página de inicio de sesión original
+                navigateToLoginRequestUrl: false 
+            },
+            cache: {
+                cacheLocation: "sessionStorage",
+                storeAuthStateInCookie: false,
             }
-        };
+    };  
+
         const myMSALObj = new msal.PublicClientApplication(msalConfig);
 
         async function handleLogin() {
