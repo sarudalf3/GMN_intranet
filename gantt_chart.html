@@ -11,6 +11,10 @@
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://alcdn.msauth.net/browser/2.30.0/js/msal-browser.min.js"></script>
+
 <style>
   :root {
     --gmn-navy: #1B3A5C;
@@ -812,21 +816,20 @@
   textarea.compact { resize: vertical; min-height: 32px; font-family: inherit; }
 </style>
 </head>
-<body class="bg-slate-50 min-h-screen font-sans">
-
-    <nav class="bg-white border-b border-gray-200 px-6 py-3 flex justify-between items-center sticky top-0 z-50">
-        <div class="flex items-center gap-4">
-            <a href="index.html" class="text-blue-600 hover:text-blue-800 flex items-center gap-2 text-sm font-medium">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
-                Volver al Inicio
-            </a>
-            <div class="h-4 w-px bg-gray-300"></div>
-            <span class="font-bold text-slate-700">Ficha de Proyecto</span>
-        </div>
-        <div id="user-info" class="text-xs text-gray-500">
-            <span id="user-display">Verificando sesión...</span>
-        </div>
-    </nav>
+<body>
+  <nav class="bg-white border-b border-gray-200 px-6 py-3 flex justify-between items-center sticky top-0 z-50">
+      <div class="flex items-center gap-4">
+          <a href="index.html" class="text-blue-600 hover:text-blue-800 flex items-center gap-2 text-sm font-medium">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+              Volver al Inicio
+          </a>
+          <div class="h-4 w-px bg-gray-300"></div>
+          <span class="font-bold text-slate-700">Aplicación Gantt</span>
+      </div>
+      <div id="user-info" class="text-xs text-gray-500">
+          <span id="user-display">Verificando sesión...</span>
+      </div>
+  </nav>
 
 <div class="app">
   <!-- ============ SIDEBAR ============ -->
