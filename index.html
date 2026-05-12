@@ -134,11 +134,22 @@
         function showDashboard(account) {
             const loginScreen = document.getElementById('login-screen');
             const dashboard = document.getElementById('dashboard');
+            const content = document.getElementById('content'); // <--- Agregamos esta referencia
             const userDisplay = document.getElementById('user-display');
 
-            if (loginScreen) loginScreen.classList.add('hidden'); // Oculta el login
-            if (dashboard) dashboard.classList.remove('hidden'); // Muestra las apps
-            if (userDisplay) userDisplay.innerText = account.username; // Pone tu email arriba
+            if (loginScreen) loginScreen.classList.add('hidden'); 
+            
+            if (dashboard) {
+                dashboard.classList.remove('hidden'); // Muestra el dashboard (navbar)
+            }
+
+            if (content) {
+                content.classList.remove('hidden'); // <--- IMPORTANTE: Muestra las secciones/apps
+            }
+
+            if (userDisplay) {
+                userDisplay.innerText = account.username; 
+            }
         }
 
         function handleLogout() {
