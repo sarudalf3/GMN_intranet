@@ -2862,6 +2862,15 @@ function init() {
 }
 
 document.addEventListener('DOMContentLoaded', init);
+
+
+  // 3. SEGURIDAD (Simulada para la maqueta)
+  // En la versión final, aquí usarías el código MSAL para verificar que el usuario esté logueado
+  window.onload = () => {
+      document.getElementById('user-display').innerText = "ruben.miranda@gmngroup.cl";
+      loadProject();
+  };
+
 </script>
 
 </body>
