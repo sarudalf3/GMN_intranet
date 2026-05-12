@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal IA | GMN Group</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://alcdn.msauth.net/browser/2.35.0/js/msal-browser.min.js"></script>
+    <script src="https://alcdn.msauth.net/browser/2.30.0/js/msal-browser.min.js"></script>
 </head>
 <body class="bg-slate-50 min-h-screen">
 
@@ -21,36 +21,37 @@
     </div>
 
     <div id="dashboard" class="hidden">
-        <nav class="bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
-            <span class="font-bold text-xl text-blue-800">GMN <span class="text-slate-500">AI HUB</span></span>
-            <div class="flex items-center gap-4">
-                <span id="user-display" class="text-sm text-gray-600"></span>
-                <button onclick="handleLogout()" class="text-xs text-red-500 hover:underline">Cerrar sesión</button>
-            </div>
-        </nav>
+    <nav class="bg-slate-900 text-white p-4 flex justify-between items-center shadow-md">
+        <span class="font-bold text-xl">GMN HUB</span>
+        <div class="flex items-center gap-4 text-sm">
+            <span id="user-display"></span>
+            <button type="button" onclick="logout()" class="bg-red-600 px-3 py-1 rounded">Cerrar Sesión</button>
+        </div>
+    </nav>
+
 
     <main id="content" class="p-8 max-w-7xl mx-auto hidden">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <section class="bg-white p-6 rounded-xl shadow-sm border">
                 <h2 class="text-xl font-bold mb-4 text-blue-600">1. Aplicaciones IA</h2>
                 <div class="space-y-3">
-                    <a href="https://TU-NGROK.app" target="_blank" rel="noopener noreferrer" class="block p-3 bg-slate-50 hover:bg-slate-100 rounded border">Gestión Gantt (Claude)</a>
+                    <a href="gantt_chart.html" target="_blank" rel="noopener noreferrer" class="block p-3 bg-slate-50 hover:bg-slate-100 rounded border">Gestión Gantt (Claude)</a>
                 </div>
             </section>
 
             <section class="bg-white p-6 rounded-xl shadow-sm border">
                 <h2 class="text-xl font-bold mb-4 text-emerald-600">2. Plantillas</h2>
                 <ul class="text-sm space-y-2">
-                    <li>📄 <a href="#" class="hover:underline">Cierre de Proyecto (DOCX)</a></li>
-                    <li>📊 <a href="#" class="hover:underline">Presentación SAP (PPTX)</a></li>
+                    <li>📄 <a href="informe_cierre.pdf" class="hover:underline">Cierre de Proyecto (DOCX)</a></li>
+                    <li>📊 <a href="presentacion_cierre.pdf" class="hover:underline">Presentación SAP (PPTX)</a></li>
                 </ul>
             </section>
 
             <section class="bg-white p-6 rounded-xl shadow-sm border">
                 <h2 class="text-xl font-bold mb-4 text-amber-600">3. Doctos Administrativos</h2>
                 <ul class="text-sm space-y-2">
-                    <li>📋 <a href="#" class="hover:underline">Formulario Vacaciones</a></li>
-                    <li>🛡️ <a href="#" class="hover:underline">Código de Higiene</a></li>
+                    <li>📋 <a href="vacaciones_form.docx" class="hover:underline">Formulario Vacaciones</a></li>
+                    <li>🛡️ <a href="RIOHS.pdf" class="hover:underline">Código de Higiene</a></li>
                 </ul>
             </section>
 
@@ -75,7 +76,7 @@
             auth: {
                 clientId: "d2b137ef-4acc-488b-bf72-3aedcc5ee545", 
                 authority: "https://login.microsoftonline.com/c5598f60-6a92-4ebb-8cb7-26d72d709407",     
-                redirectUri: "https://sarudalf3.github.io/GMN_intranet/auth.html",       
+                redirectUri: window.location.origin + "/GMN_intranet/auth.html",       
                 navigateToLoginRequestUrl: false 
             },
             cache: {
