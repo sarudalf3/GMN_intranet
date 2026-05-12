@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Dashboard | GMN Group</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://alcdn.msauth.net/browser/2.35.0/js/msal-browser.min.js"></script>
+    <script src="https://alcdn.msauth.net/browser/2.30.0/js/msal-browser.min.js"></script>
+    <script src="js/authConfig.js"></script>
+    <script src="js/auth.js"></script>
+
 </head>
 <body class="bg-slate-50 min-h-screen">
     <nav class="bg-slate-900 text-white p-4 flex justify-between items-center shadow-md">
@@ -56,49 +59,21 @@
         </div>
     </main>
 
-    <script>
-        const msalConfig = {
-            auth: {
-                clientId: "d2b137ef-4acc-488b-bf72-3aedcc5ee545",
-                authority: "https://login.microsoftonline.com/c5598f60-6a92-4ebb-8cb7-26d72d709407",
-                redirectUri: "https://sarudalf3.github.io/GMN_intranet/dashboard.html"
-            }
-        };
-        const myMSALObj = new msal.PublicClientApplication(msalConfig);
-
-        myMSALObj.handleRedirectPromise()
-            .then((response) => {
-                if (response !== null) {
-                    console.log("Sesión iniciada correctamente");
-                    // Aquí puedes ejecutar la lógica para cargar los datos del dashboard
-                } else {
-                    // Si el usuario llega aquí sin estar autenticado, 
-                    // podrías devolverlo a index.html
-                    const currentAccounts = myMSALObj.getAllAccounts();
-                    if (currentAccounts.length === 0) {
-                        window.location.assign = "index.html";
-                    }
-                }
-            })
-            .catch((error) => {
-                console.error("Error en redirección:", error);
-            });
-
-
-        function processAccount(account) {
-            document.getElementById('content').classList.remove('hidden');
-            document.getElementById('user-display').innerText = account.username;
-
-            // LÓGICA DE ADMIN
-            const roles = account.idTokenClaims.roles || [];
-            if (roles.includes("Admin")) {
-                document.getElementById('admin-panel').classList.remove('hidden');
-            }
+<script>
+    // Pequeña validación extra de seguridad en el dashboard
+    window.onload = () => {
+        const accounts = myMSALObj.getAllAccounts();
+        if (accounts.length === 0) {
+            window.location.assign("index.html");
+        } else {
+            console.log("Bienvenido:", accounts[0].username);
+            // Aquí puedes rellenar el nombre del usuario en el HTML si quieres
+            // document.getElementById('username').innerText = accounts[0].name;
         }
+    };
+</script>
 
-        function logout() {
-            myMSALObj.logoutRedirect();
-        }
-    </script>
+<button onclick="signOut()">Cerrar Sesión</button>
+
 </body>
 </html>

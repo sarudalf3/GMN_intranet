@@ -1,19 +1,34 @@
 <!DOCTYPE html>
-
 <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Autenticando...</title>
-        <script src="https://alcdn.msauth.net/browser/2.35.0/js/msal-browser.min.js"></script>
-    </head>
-    <body>
-        <script>
-            // Este archivo solo sirve para cerrar el popup y devolver el control
-            const msalInstance = new msal.PublicClientApplication({
-                auth: { clientId: "d2b137ef-4acc-488b-bf72-3aedcc5ee545" }
+<head>
+    <meta charset="UTF-8">
+    <title>Autenticando...</title>
+    <script src="https://alcdn.msauth.net/browser/2.35.0/js/msal-browser.min.js"></script>
+</head>
+<body>
+    <script>
+        // La configuración DEBE ser la misma que en tu página principal
+        const msalConfig = {
+            auth: {
+                clientId: "d2b137ef-4acc-488b-bf72-3aedcc5ee545",
+                authority: "https://login.microsoftonline.com/c5598f60-6a92-4ebb-8cb7-26d72d709407"
+            },
+            cache: {
+                cacheLocation: "sessionStorage"
+            }
+        };
+
+        const msalInstance = new msal.PublicClientApplication(msalConfig);
+
+        // Esta función es la que detecta el "#code=..." en la URL,
+        // guarda el token y CIERRA automáticamente el popup.
+        msalInstance.handleRedirectPromise()
+            .then(() => {
+                console.log("Token procesado y popup cerrándose...");
+            })
+            .catch(err => {
+                console.error("Error procesando el login:", err);
             });
-            msalInstance.handleRedirectPromise();
-        </script>
-    </body>
+    </script>
+</body>
 </html>

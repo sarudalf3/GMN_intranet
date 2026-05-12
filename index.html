@@ -2,54 +2,154 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Login | GMN Group</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal IA | GMN Group</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://alcdn.msauth.net/browser/2.35.0/js/msal-browser.min.js"></script>
 </head>
-<body class="bg-slate-900 flex items-center justify-center h-screen">
-    <div class="bg-white p-10 rounded-2xl shadow-2xl text-center max-w-sm">
-        <h1 class="text-2xl font-bold mb-4 text-slate-800">GMN Intranet</h1>
-        <p class="text-gray-500 mb-8">Inicia sesión con tu cuenta corporativa.</p>
-        <button onclick="handleLogin()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition-all flex items-center justify-center gap-2">
-            <img src="https://docs.microsoft.com/en-us/azure/active-directory/develop/media/howto-add-branding-in-azure-ad-apps/ms-symbollockup_mssymbol_32.png" 
-                alt="Microsoft logo"
-                title="Microsoft logo"
-                class="w-5 h-5">
-            Iniciar sesión
-        </button>
+<body class="bg-slate-50 min-h-screen">
+
+    <div id="login-screen" class="flex flex-col items-center justify-center h-screen">
+        <div class="bg-white p-8 rounded-2xl shadow-xl border border-gray-100 text-center max-w-sm">
+            <h1 class="text-2xl font-bold text-slate-800 mb-2">GMN Group</h1>
+            <p class="text-gray-500 mb-6">Inicia sesión con tu cuenta corporativa para acceder a las herramientas de IA.</p>
+            <button onclick="handleLogin()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition-all flex items-center justify-center gap-2">
+                <img src="https://docs.microsoft.com/en-us/azure/active-directory/develop/media/howto-add-branding-in-azure-ad-apps/ms-symbollockup_mssymbol_32.png" alt="Microsoft logo" class="w-5 h-5">
+                Iniciar sesión con Microsoft
+            </button>
+        </div>
+    </div>
+
+    <div id="dashboard" class="hidden">
+        <nav class="bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
+            <span class="font-bold text-xl text-blue-800">GMN <span class="text-slate-500">AI HUB</span></span>
+            <div class="flex items-center gap-4">
+                <span id="user-display" class="text-sm text-gray-600"></span>
+                <button onclick="handleLogout()" class="text-xs text-red-500 hover:underline">Cerrar sesión</button>
+            </div>
+        </nav>
+
+    <main id="content" class="p-8 max-w-7xl mx-auto hidden">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <section class="bg-white p-6 rounded-xl shadow-sm border">
+                <h2 class="text-xl font-bold mb-4 text-blue-600">1. Aplicaciones IA</h2>
+                <div class="space-y-3">
+                    <a href="https://TU-NGROK.app" target="_blank" rel="noopener noreferrer" class="block p-3 bg-slate-50 hover:bg-slate-100 rounded border">Gestión Gantt (Claude)</a>
+                </div>
+            </section>
+
+            <section class="bg-white p-6 rounded-xl shadow-sm border">
+                <h2 class="text-xl font-bold mb-4 text-emerald-600">2. Plantillas</h2>
+                <ul class="text-sm space-y-2">
+                    <li>📄 <a href="#" class="hover:underline">Cierre de Proyecto (DOCX)</a></li>
+                    <li>📊 <a href="#" class="hover:underline">Presentación SAP (PPTX)</a></li>
+                </ul>
+            </section>
+
+            <section class="bg-white p-6 rounded-xl shadow-sm border">
+                <h2 class="text-xl font-bold mb-4 text-amber-600">3. Doctos Administrativos</h2>
+                <ul class="text-sm space-y-2">
+                    <li>📋 <a href="#" class="hover:underline">Formulario Vacaciones</a></li>
+                    <li>🛡️ <a href="#" class="hover:underline">Código de Higiene</a></li>
+                </ul>
+            </section>
+
+            <section class="bg-white p-6 rounded-xl shadow-sm border">
+                <h2 class="text-xl font-bold mb-4 text-purple-600">4. Wiki de Proyectos</h2>
+                <ul class="text-sm space-y-2">
+                    <li>🔗 <a href="proyecto_info.html?id=proyectoA" class="text-purple-700 font-bold hover:underline">Proyecto Aac</a></li>
+                    <li>🔗 <a href="proyecto_info.html?id=proyectoB" class="text-purple-700 font-bold hover:underline">Proyecto Bbb</a></li>
+                </ul>
+            </section>
+        </div>
+
+        <div id="admin-panel" class="hidden mt-8 p-6 bg-slate-800 text-white rounded-xl">
+            <h3 class="font-bold">Panel Administrador</h3>
+            <button class="mt-2 text-sm bg-blue-600 px-4 py-2 rounded">Subir nuevo archivo</button>
+        </div>
+    </main>
     </div>
 
     <script>
         const msalConfig = {
             auth: {
-                clientId: "d2b137ef-4acc-488b-bf72-3aedcc5ee545",
-                authority: "https://login.microsoftonline.com/c5598f60-6a92-4ebb-8cb7-26d72d709407",
-                        // Esto asegura que siempre intente ir a dashboard.html
-                redirectUri: window.location.origin + "/GMN_intranet/dashboard.html",  
-                //redirectUri: "https://sarudalf3.github.io/GMN_intranet/dashboard.html", // OJO: Apunta al dashboard
-                // Evita que MSAL intente volver a la página de inicio de sesión original
+                clientId: "d2b137ef-4acc-488b-bf72-3aedcc5ee545", 
+                authority: "https://login.microsoftonline.com/c5598f60-6a92-4ebb-8cb7-26d72d709407",     
+                redirectUri: "https://sarudalf3.github.io/GMN_intranet/auth.html",       
                 navigateToLoginRequestUrl: false 
             },
             cache: {
                 cacheLocation: "sessionStorage",
-                storeAuthStateInCookie: false,
+                storeAuthStateInCookie: false
             }
-    };  
-
+    };
         const myMSALObj = new msal.PublicClientApplication(msalConfig);
 
-        async function handleLogin() {
-            // Usamos Redirect para evitar problemas de popups bloqueados
-            myMSALObj.loginRedirect({ scopes: ["user.read"] });
+        // 1. AL CARGAR LA PÁGINA: Procesar la respuesta del login
+        myMSALObj.handleRedirectPromise().then(handleResponse).catch(err => {
+            console.error("Error en Redirect:", err);
+        });
+
+        function handleResponse(response) {
+            if (response !== null) {
+                checkAndShow(response.account);
+            } else {
+                const currentAccounts = myMSALObj.getAllAccounts();
+                if (currentAccounts.length > 0) {
+                    checkAndShow(currentAccounts[0]);
+                }
+            }
         }
 
-        // Si ya tiene sesión, enviarlo directo al dashboard
-        window.onload = () => {
-            if (myMSALObj.getAllAccounts().length > 0) {
-                window.location.href = "dashboard.html";
+        function checkAndShow(account) {
+            if (account.username.toLowerCase().endsWith("@gmngroup.cl")) {
+                showDashboard(account);
+            } else {
+                alert("Acceso restringido solo para @gmngroup.cl");
+                handleLogout();
             }
-        };
+        }
+
+        async function handleLogin() {
+            try {
+                // Al usar await, el código se "detiene" hasta que el popup termina
+                const loginResponse = await myMSALObj.loginPopup({
+                    scopes: ["user.read"],
+                    prompt: "select_account"
+                });
+
+                console.log("Login exitoso en popup");
+                
+                // Al usar await, esta línea se ejecuta SOLO cuando el popup se cierra solo
+                if (loginResponse && loginResponse.account) {
+                    checkAndShow(loginResponse.account);
+                }
+                
+            } catch (error) {
+                console.error("Error en Login:", error);
+                // Si el usuario cierra el popup manualmente antes de loguearse, entrará aquí
+            }
+        }
+
+        function showDashboard(account) {
+            const loginScreen = document.getElementById('login-screen');
+            const dashboard = document.getElementById('dashboard');
+            const userDisplay = document.getElementById('user-display');
+
+            if (loginScreen) loginScreen.classList.add('hidden'); // Oculta el login
+            if (dashboard) dashboard.classList.remove('hidden'); // Muestra las apps
+            if (userDisplay) userDisplay.innerText = account.username; // Pone tu email arriba
+        }
+
+        function handleLogout() {
+            const logoutRequest = {
+                account: myMSALObj.getAccountByUsername(document.getElementById('user-display').innerText),
+                postLogoutRedirectUri: msalConfig.auth.redirectUri
+            };
+            myMSALObj.logoutPopup(logoutRequest).then(() => {
+                location.reload();
+            });
+        }
     </script>
 </body>
 </html>
