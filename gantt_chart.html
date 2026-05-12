@@ -2855,21 +2855,18 @@ function init() {
   dt.setDate(dt.getDate() + diff);
   $('#projectStart').value = dt.toISOString().slice(0, 10);
 
-  generateWeeks();
-  renderTaskTable();
-  renderFindings();
-  renderCommits();
-}
-
-document.addEventListener('DOMContentLoaded', init);
-
-
   // 3. SEGURIDAD (Simulada para la maqueta)
   // En la versión final, aquí usarías el código MSAL para verificar que el usuario esté logueado
   window.onload = () => {
       document.getElementById('user-display').innerText = "ruben.miranda@gmngroup.cl";
-      loadProject();
-  };
+  generateWeeks();
+  renderTaskTable();
+  renderFindings();
+  renderCommits();
+  }
+}
+
+document.addEventListener('DOMContentLoaded', init);
 
 </script>
 
